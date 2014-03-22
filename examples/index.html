@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+  <head>
+    <title>AngularJS Drag and Drop</title>
+    <style>
+      div {
+        width: 300px;
+        height: 300px;
+        margin: 20px;
+        background: blue;
+      }
+      div[draggable=true] {
+        background: red;
+      }
+      .dnd-dragging {
+        opacity: 0.5;
+      }
+      .dnd-over {
+        background: green;
+      }
+    </style>
+    <script src="../bower_components/angular/angular.min.js"></script>
+    <script src="../drag_and_drop.js"></script>
+    <script>
+      angular.module('app', ['dragAndDrop'])
+        // drag controller
+        .controller('dragCtrl', function ($scope) {
+          $scope.onStart = function (event) {
+            event.dataTransfer.setData('text/plain', 'dataString');
+            event.dataTransfer.setData('text/html', '<p>content</p>');
+          }
+        })
+        // drop controller
+        .controller('dropCtrl', function ($scope) {
+          $scope.onDrop = function (event) {
+            console.log(event.dataTransfer.getData('text/plain'));
+            console.log(event.dataTransfer.getData('text/html'));
+          }
+        });
+    </script>
+  </head>
+  <body>
+  	<div ng-controller="dragCtrl" drag="{start: 'onStart'}"></div>
+    <div ng-controller="dropCtrl" drop="{drop: 'onDrop'}"></div>
+  </body>
+</html>
